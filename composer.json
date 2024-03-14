@@ -1,0 +1,38 @@
+{
+  "name": "ledc/likeadmin",
+  "type": "library",
+  "license": "MIT",
+  "description": "Webman plugin ledc/likeadmin，兼容likeadmin用户",
+  "authors": [
+    {
+      "name": "david",
+      "email": "367013672@qq.com",
+      "homepage": "https://www.iyuu.cn",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "367013672@qq.com",
+    "issues": "https://github.com/ledccn/likeadmin/issues",
+    "source": "https://github.com/ledccn/likeadmin"
+  },
+  "require": {
+    "php": ">=8.2",
+    "workerman/webman-framework": "^1.5.0",
+    "illuminate/redis": "^10.14",
+    "illuminate/database": "^10.14",
+    "illuminate/pagination": "^10.14",
+    "illuminate/events": "^10.14",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "ext-ctype": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ledc\\Likeadmin\\": "src"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  }
+}
