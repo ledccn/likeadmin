@@ -2,7 +2,6 @@
 
 namespace Ledc\Likeadmin\Middleware;
 
-use Exception;
 use Ledc\Likeadmin\Model\User;
 use Ledc\Likeadmin\Model\UserSession;
 use ReflectionClass;
@@ -33,17 +32,10 @@ class LoginMiddleware implements MiddlewareInterface
      * @param Request $request
      * @param callable $handler
      * @return Response
-     * @throws Exception
      */
     public function process(Request $request, callable $handler): Response
     {
-        $token = $request->header('token', $request->cookie('token'));
-        if ($token && ctype_alnum($token) && strlen($token) <= 40) {
-            $request->sessionId($token);
-            if (!like_user_id()) {
-                self::setUserInfo($token);
-            }
-        }
+        self::initLaUserSession($request);
 
         $code = 0;
         $msg = '';
@@ -64,7 +56,6 @@ class LoginMiddleware implements MiddlewareInterface
      * @param string $msg
      * @param int $show
      * @return bool
-     * @throws Exception
      */
     protected static function canAccess(Request $request, int &$code = 0, string &$msg = '', int &$show = 0): bool
     {
@@ -126,7 +117,6 @@ class LoginMiddleware implements MiddlewareInterface
      * 刷新当前用户session
      * @param bool $force 强制刷新
      * @return void
-     * @throws Exception
      */
     final public static function refreshUserSession(bool $force = false): void
     {
@@ -151,10 +141,25 @@ class LoginMiddleware implements MiddlewareInterface
     }
 
     /**
+     * 初始化La用户Session
+     * @param Request $request
+     * @return void
+     */
+    final public static function initLaUserSession(Request $request): void
+    {
+        $token = $request->header('token', $request->cookie('token'));
+        if ($token && ctype_alnum($token) && strlen($token) <= 40) {
+            $request->sessionId($token);
+            if (!like_user_id()) {
+                self::setUserInfo($token);
+            }
+        }
+    }
+
+    /**
      * 通过有效token设置用户信息缓存
      * @param string $token
      * @return void
-     * @throws Exception
      */
     final protected static function setUserInfo(string $token): void
     {
