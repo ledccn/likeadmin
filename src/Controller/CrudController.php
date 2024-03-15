@@ -336,8 +336,8 @@ class CrudController extends BaseController
         }
         $ids = (array)$request->post($primary_key, []);
         if ($this->dataLimit) {
-            $admin_ids = $this->model->where($primary_key, $ids)->pluck($this->dataLimitField)->toArray();
-            if (array_diff($admin_ids, [like_user_id()])) {
+            $user_ids = $this->model->where($primary_key, $ids)->pluck($this->dataLimitField)->toArray();
+            if (array_diff($user_ids, [like_user_id()])) {
                 throw new BusinessException('无数据权限');
             }
         }
