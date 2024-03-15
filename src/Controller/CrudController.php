@@ -209,9 +209,11 @@ class CrudController extends BaseController
     {
         $data = $this->inputFilter($request->post());
         if ($this->dataLimit) {
-            if (!empty($data[$this->dataLimitField])) {
-                $data[$this->dataLimitField] = like_user_id();
+            $user_id = like_user_id();
+            if (empty($user_id)) {
+                throw new BusinessException('用户ID为空', -1);
             }
+            $data[$this->dataLimitField] = $user_id;
         }
         return $data;
     }
