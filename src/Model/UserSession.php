@@ -1,6 +1,6 @@
 <?php
 
-namespace Ledc\Likeadmin;
+namespace Ledc\Likeadmin\Model;
 
 use Illuminate\Database\Eloquent\Builder;
 use support\Model;
@@ -16,7 +16,7 @@ use support\Model;
 class UserSession extends Model
 {
     /**
-     * The table associated with the model.
+     * The table associated with the Model.
      *
      * @var string
      */
@@ -30,7 +30,7 @@ class UserSession extends Model
     protected $primaryKey = 'id';
 
     /**
-     * Indicates if the model should be timestamped.
+     * Indicates if the Model should be timestamped.
      *
      * @var bool
      */

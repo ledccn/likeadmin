@@ -1,13 +1,17 @@
 <?php
 
-namespace Ledc\Likeadmin;
+namespace Ledc\Likeadmin\Middleware;
 
 use Exception;
+use Ledc\Likeadmin\Model\User;
+use Ledc\Likeadmin\Model\UserSession;
 use ReflectionClass;
 use ReflectionException;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
+use function Ledc\Likeadmin\like_user;
+use function Ledc\Likeadmin\like_user_id;
 
 /**
  * Like用户鉴权中间件

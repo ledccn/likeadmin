@@ -5,5 +5,5 @@
  */
 
 return [
-    Ledc\Likeadmin\NginxConfigCommand::class
+    Ledc\Likeadmin\Command\NginxConfig::class
 ];

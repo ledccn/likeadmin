@@ -6,11 +6,11 @@
 
 return [
     'enable' => true,
-    // 未登录时的固定返回码
+    // 未登录时，响应code
     'token_invalid_code' => -1,
-    // 失败code
+    // 失败响应code
     'fail_code' => 0,
-    // 成功code
+    // 成功响应code
     'success_code' => 1,
 
     // 商城用户token（登录令牌）配置

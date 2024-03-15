@@ -6,9 +6,9 @@
 
 return [
     'likeadmin' => [
-        Ledc\Likeadmin\LoginMiddleware::class,
+        Ledc\Likeadmin\Middleware\LoginMiddleware::class,
     ],
     'like' => [
-        Ledc\Likeadmin\LoginMiddleware::class,
+        Ledc\Likeadmin\Middleware\LoginMiddleware::class,
     ],
 ];
