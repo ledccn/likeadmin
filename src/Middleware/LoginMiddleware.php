@@ -10,7 +10,6 @@ use ReflectionException;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
-use function Ledc\Likeadmin\like_user;
 use function Ledc\Likeadmin\like_user_id;
 
 /**
@@ -99,7 +98,16 @@ class LoginMiddleware implements MiddlewareInterface
             }
         }
 
-        $expire_time = session(static::SESSION_KEY . '.expire_time', 0);
+        //获取登录信息
+        $user = session(static::SESSION_KEY);
+        if (!$user) {
+            // 未登录返回码
+            $code = config(PLUGIN_LEDC_LIKEADMIN. '.app.token_invalid_code', -1);
+            $msg = '未登录';
+            return false;
+        }
+
+        $expire_time = $user['expire_time'] ?? 0;
         if (time() > $expire_time) {
             // 未登录返回码
             $code = config(PLUGIN_LEDC_LIKEADMIN. '.app.token_invalid_code', -1);
@@ -110,14 +118,7 @@ class LoginMiddleware implements MiddlewareInterface
             return false;
         }
 
-        //获取登录信息
-        $user = like_user();
-        if (!$user) {
-            // 未登录返回码
-            $code = config(PLUGIN_LEDC_LIKEADMIN. '.app.token_invalid_code', -1);
-            $msg = '未登录';
-            return false;
-        }
+        static::refreshUserSession();
         return true;
     }
 
