@@ -20,6 +20,10 @@ use function Ledc\Likeadmin\like_user_id;
 class LoginMiddleware implements MiddlewareInterface
 {
     /**
+     * 存储在SESSION的键名
+     */
+    public const SESSION_KEY = 'la_user';
+    /**
      * 无需登录及鉴权
      * - 路由向中间件传参的键名
      * - true不需要登录，false需要登录
@@ -95,11 +99,22 @@ class LoginMiddleware implements MiddlewareInterface
             }
         }
 
+        $expire_time = session(static::SESSION_KEY . '.expire_time', 0);
+        if (time() > $expire_time) {
+            // 未登录返回码
+            $code = config(PLUGIN_LEDC_LIKEADMIN. '.app.token_invalid_code', -1);
+            $msg = '登录过期';
+            $session = request()->session();
+            UserSession::expireToken($session->getId());
+            $session->forget(static::SESSION_KEY);
+            return false;
+        }
+
         //获取登录信息
         $user = like_user();
         if (!$user) {
             // 未登录返回码
-            $code = config('plugin.ledc.likeadmin.app.token_invalid_code', -1);
+            $code = config(PLUGIN_LEDC_LIKEADMIN. '.app.token_invalid_code', -1);
             $msg = '未登录';
             return false;
         }
@@ -120,14 +135,14 @@ class LoginMiddleware implements MiddlewareInterface
         $time_now = time();
         // session在3600秒内不刷新
         $session_ttl = 3600;
-        $session_last_update_time = session('la_user.session_last_update_time', 0);
+        $session_last_update_time = session(static::SESSION_KEY. '.session_last_update_time', 0);
         if (!$force && $time_now - $session_last_update_time < $session_ttl) {
             return;
         }
 
         $session = request()->session();
-        if (!UserSession::overtimeToken($session->getId())) {
-            $session->forget('la_user');
+        if (!UserSession::overtimeToken($session->getId(), config(PLUGIN_LEDC_LIKEADMIN . '.app.user_token.expire_duration', 604800))) {
+            $session->forget(static::SESSION_KEY);
             return;
         }
 
@@ -147,7 +162,7 @@ class LoginMiddleware implements MiddlewareInterface
             $session = request()->session();
             $user = User::find($userSession->user_id);
             if (!$user) {
-                $session->forget('la_user');
+                $session->forget(static::SESSION_KEY);
                 return;
             }
 
@@ -163,7 +178,7 @@ class LoginMiddleware implements MiddlewareInterface
                 'expire_time' => $userSession->expire_time,
                 'session_last_update_time' => time(),
             ];
-            $session->set('la_user', $userInfo);
+            $session->set(static::SESSION_KEY, $userInfo);
         }
     }
 }

@@ -16,6 +16,5 @@ return [
     // 商城用户token（登录令牌）配置
     'user_token' => [
         'expire_duration' => 3600 * 24 * 30,    //用户token过期时长(单位秒）
-        'be_expire_duration' => 3600,   //用户token临时过期前时长，自动续期
     ],
 ];

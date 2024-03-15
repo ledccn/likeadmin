@@ -17,7 +17,7 @@ defined('PLUGIN_LEDC_LIKEADMIN') || define('PLUGIN_LEDC_LIKEADMIN', 'plugin.ledc
  */
 function like_user_id(): ?int
 {
-    return session('la_user.id');
+    return session(LoginMiddleware::SESSION_KEY . '.id');
 }
 
 
@@ -30,7 +30,7 @@ function like_user_id(): ?int
 function like_user(array|string $fields = null): mixed
 {
     LoginMiddleware::refreshUserSession();
-    if (!$user = session('la_user')) {
+    if (!$user = session(LoginMiddleware::SESSION_KEY)) {
         return null;
     }
     if ($fields === null) {

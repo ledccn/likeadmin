@@ -59,16 +59,17 @@ class UserSession extends Model
     /**
      * 延长token过期时间
      * @param string $token
+     * @param int $expire_duration 用户token过期时长(单位秒）
      * @return bool
      */
-    public static function overtimeToken(string $token): bool
+    public static function overtimeToken(string $token, int $expire_duration): bool
     {
         $time = time();
         $model = static::getSessionByToken($token);
         if (!$model) {
             return false;
         }
-        $model->expire_time = $time + 3600 * 8;
+        $model->expire_time = $time + $expire_duration;
         $model->update_time = $time;
         return $model->save();
     }
@@ -85,7 +86,7 @@ class UserSession extends Model
             return false;
         }
         $time = time();
-        $model->expire_time = $time;
+        $model->expire_time = $time - 30;
         $model->update_time = $time;
         return $model->save();
     }
