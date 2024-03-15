@@ -69,7 +69,7 @@ class CrudController extends BaseController
         if ($ids = $this->deleteInput($request)) {
             $count = $this->model->destroy($ids);
         }
-        return $this->success('ok', ['count' => $count], 1);
+        return $this->success('删除成功', ['count' => $count], 1);
     }
 
     /**
