@@ -252,7 +252,7 @@ class CrudController extends BaseController
         // 检查更新数据域是否有权限
         $dataLimitField = $this->dataLimitField;
         if ($this->dataLimit && !empty($data[$dataLimitField])) {
-            if ($model->{$dataLimitField} === $data[$dataLimitField]) {
+            if ($model->{$dataLimitField} !== $data[$dataLimitField]) {
                 throw new BusinessException('无数据权限');
             }
         }
