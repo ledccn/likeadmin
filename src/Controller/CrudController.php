@@ -251,11 +251,18 @@ class CrudController extends BaseController
             throw new BusinessException('记录不存在', 2);
         }
 
-        // 检查更新数据域是否有权限
-        $dataLimitField = $this->dataLimitField;
-        if ($this->dataLimit && array_key_exists($dataLimitField, $data)) {
-            if ($model->{$dataLimitField} !== $data[$dataLimitField]) {
-                throw new BusinessException('无数据权限');
+        // 检查数据域是否有更新权限
+        if ($this->dataLimit) {
+            $user_id = like_user_id();
+            if (empty($user_id)) {
+                throw new BusinessException('用户ID为空', -1);
+            }
+            $dataLimitField = $this->dataLimitField;
+            if ($user_id !== $model->{$dataLimitField}) {
+                throw new BusinessException('无数据权限A');
+            }
+            if (array_key_exists($dataLimitField, $data) && $user_id !== $data[$dataLimitField]) {
+                throw new BusinessException('无数据权限B');
             }
         }
 
