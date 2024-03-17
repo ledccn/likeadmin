@@ -65,7 +65,7 @@ class UserSession extends Model
     public static function overtimeToken(string $token, int $expire_duration): bool
     {
         $time = time();
-        $model = static::getSessionByToken($token);
+        $model = static::firstByToken($token);
         if (!$model) {
             return false;
         }
