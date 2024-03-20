@@ -51,8 +51,8 @@ class CrudController extends BaseController
      */
     public function update(Request $request): Response
     {
-        [$id, $data] = $this->updateInput($request);
-        $this->doUpdate($id, $data);
+        [$id, $data, $model] = $this->updateInput($request);
+        $this->doUpdate($id, $data, $model);
         return $this->success();
     }
 
@@ -274,18 +274,19 @@ class CrudController extends BaseController
             }
         }
         unset($data[$primary_key]);
-        return [$id, $data];
+        return [$id, $data, $model];
     }
 
     /**
      * 执行更新
-     * @param $id
-     * @param $data
+     * @param int|string $id
+     * @param array $data
+     * @param Model|null $model
      * @return void
      */
-    protected function doUpdate($id, $data): void
+    protected function doUpdate(int|string $id, array $data, ?Model $model = null): void
     {
-        $model = $this->model->find($id);
+        $model = $model ?? $this->model->find($id);
         foreach ($data as $key => $val) {
             $model->{$key} = $val;
         }

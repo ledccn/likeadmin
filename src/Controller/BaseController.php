@@ -14,9 +14,9 @@ use support\Response;
 class BaseController
 {
     /**
-     * @var Model
+     * @var Model|null
      */
-    protected $model = null;
+    protected ?Model $model = null;
 
     /**
      * 无需登录及鉴权的方法
