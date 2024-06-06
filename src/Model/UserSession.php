@@ -3,7 +3,6 @@
 namespace Ledc\Likeadmin\Model;
 
 use Illuminate\Database\Eloquent\Builder;
-use plugin\movie\app\model\enums\UserChannelEnum;
 use support\Model;
 
 /**
@@ -39,8 +38,8 @@ class UserSession extends Model
 
     /**
      * 构造器：唯一约束
-     * @param int $user_id
-     * @param int $terminal
+     * @param int $user_id 用户id
+     * @param int $terminal 客户端类型
      * @return Builder
      */
     public static function uniqueBuilder(int $user_id, int $terminal): Builder
