@@ -425,7 +425,7 @@ class CrudController extends BaseController
      */
     protected function formatNormal($items, $total): Response
     {
-        return json(['code' => 1, 'msg' => 'success', 'count' => $total, 'data' => $items]);
+        return json(['code' => 1, 'msg' => 'success', 'data' => ['count' => $total, 'lists' => $items]]);
     }
 
     /**
